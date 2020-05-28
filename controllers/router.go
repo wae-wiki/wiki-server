@@ -17,4 +17,5 @@ func InnerRouter(app *iris.Application) {
     app.OnErrorCode(iris.StatusInternalServerError, err500)
     app.OnErrorCode(iris.StatusBadRequest, err400)
     app.Post("/editor", router.UpdateContent)
+    app.Get("/editor", router.GetArticlesList)
 }

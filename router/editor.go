@@ -1,10 +1,13 @@
 package router
 
 import (
+    "IRIS_WEB/mongo"
     "github.com/kataras/iris/v12"
+    "go.mongodb.org/mongo-driver/bson"
 )
 
 type ContentStr struct {
+    Title string `json:title`
     Content string `json:"content"`
 }
 
@@ -16,6 +19,15 @@ func UpdateContent(ctx iris.Context) {
     } else {
         ctx.Header("Access-Control-Allow-Methods", "*")
         ctx.Header("Access-Control-Allow-Origin", "*")
-        ctx.JSON(c)
+        res := mongo.InsertOne(c.Title, c.Content)
+        ctx.WriteString(res)
     }
+}
+
+func GetArticlesList(ctx iris.Context) {
+    list, err := mongo.FindAll("content", bson.M{})
+    if err != nil {
+        ctx.JSON(err)
+    }
+    ctx.JSON(list)
 }
