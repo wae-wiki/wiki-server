@@ -36,7 +36,7 @@ func openConnectMongo() *mongo.Client {
 
 func FindOne(collectionName string, filter bson.M) (bson.M, error) {
     mongoClient := openConnectMongo()
-    defer mongoClient.Disconnect(context.Background())
+
     if mongoClient == nil {
         return nil, fmt.Errorf("没有连接到数据库")
     }
@@ -44,6 +44,7 @@ func FindOne(collectionName string, filter bson.M) (bson.M, error) {
     collection := mongoClient.Database("wiki").Collection(collectionName)
     var result bson.M
     err := collection.FindOne(ctx, filter).Decode(&result)
+    defer mongoClient.Disconnect(ctx)
     if err != nil {
         return nil, err
     }
