@@ -7,7 +7,7 @@ import (
 )
 
 type ContentStr struct {
-    Title string `json:title`
+    Title string `json:"title"`
     Content string `json:"content"`
 }
 
@@ -29,5 +29,7 @@ func GetArticlesList(ctx iris.Context) {
     if err != nil {
         ctx.JSON(err)
     }
+    ctx.Header("Access-Control-Allow-Methods", "*")
+    ctx.Header("Access-Control-Allow-Origin", "*")
     ctx.JSON(list)
 }
