@@ -84,6 +84,9 @@ func InsertOne(title string, content string) string {
     _, err := collection.InsertOne(context.Background(), bson.M{
         "title": title,
         "content": content,
+        "createTime": time.Now().UnixNano() / 1e6, // 获取13位时间戳
+        "modifiedTime": time.Now().UnixNano() / 1e6,
+        "author": "Hing",
     })
     if err != nil {
         return "插入失败"
